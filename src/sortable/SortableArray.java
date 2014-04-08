@@ -6,8 +6,8 @@ import java.util.Random;
 import performance_measure_tools.*;
 
 public class SortableArray {
-	public static final int SIZE = 5;
-	public static final int RANGE = 100;
+	public static final int SIZE = 10;
+	public static final int RANGE = 5;
 	
 	private int[] tab;
 	private int[] tabRaw;
@@ -132,6 +132,70 @@ public class SortableArray {
 		return t.Time();
 	}
 	
+	public long MergeSort() {
+		ArrayRewrite();
+		Timer t = new Timer();
+		//System.out.println("\nPerforming MergeSort()");
+		t.Start();
+        if (this.tab.length > 1) {
+            int q = this.tab.length/2; 
+            SortableArray leftArray = new SortableArray(Arrays.copyOfRange(this.tab, 0, q));
+            SortableArray rightArray = new SortableArray(Arrays.copyOfRange(this.tab, q, this.tab.length));
+            leftArray.MergeSort();
+            rightArray.MergeSort();
+            this.tab = Merge(leftArray,rightArray);
+        }
+        t.Stop();
+		return t.Time();
+    }
+	private int[] Merge(SortableArray leftArray, SortableArray rightArray) {
+		int newSize = leftArray.getTabSize() + rightArray.getTabSize();
+		int [] left = leftArray.getArray();
+		int [] right = rightArray.getArray();
+		int [] merged = new int[newSize];
+		int i = 0
+		  , l = 0
+		  , r = 0;
+		while(i < newSize) {
+			if( (l < left.length) && (r < right.length) ) {
+				if( left[l] < right[r] ) {
+					merged[i] = left[l];
+					++l;
+					++i;				
+				}
+				else {
+					merged[i] = right[r];
+					++r;
+					++i;
+				}
+			}
+			else {
+				if( l < left.length ) {
+					merged[i] = left[l];
+					++l;
+					++i;	
+				}
+				else {
+					merged[i] = right[r];
+					++r;
+					++i;
+				}
+			}
+		}
+		//System.out.print("Merged: ");
+		//this.PrintArray(merged);
+		//System.out.println("");
+		return merged;
+	}
+
+	private int[] getArray() {
+		return this.tab;
+	}
+
+	private int getTabSize() {
+		return this.tab.length;
+	}
+
 	public boolean IsSorted() {
 		for(int i = 0; i < tab.length-1; ++i) {
 			if( tab[i] > tab[i+1]) {
@@ -143,14 +207,13 @@ public class SortableArray {
 	
 	public void PrintArray() {
 		for(int i = 0; i < this.tab.length; ++i) {
-			System.out.println(this.tab[i]);
+			System.out.print(this.tab[i] + " ");
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private void PrintArray(int[] tab) {
 		for(int i = 0; i < tab.length; ++i) {
-			System.out.println(tab[i]);
+			System.out.print(tab[i] + " ");
 		}
 	}
 	
