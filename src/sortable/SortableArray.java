@@ -244,4 +244,12 @@ public class SortableArray {
 		}
 		return min;
 	}
+
+	public int getSize() {
+		return this.size;
+	}
+
+	public int getRange() {
+		return this.range;
+	}
 }
