@@ -211,6 +211,7 @@ public class SortableArray {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void PrintArray(int[] tab) {
 		for(int i = 0; i < tab.length; ++i) {
 			System.out.print(tab[i] + " ");
